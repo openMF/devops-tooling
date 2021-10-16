@@ -49,7 +49,8 @@ Verify the Java version
 ```console
 java -version
 ```
-Jenkins Installation.
+Jenkins Installation
+====================
 Download the Jenkins Key and Add it to the keyring
 ```console
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
@@ -80,7 +81,8 @@ Check the status of the Jenkins service
 sudo systemctl status jenkins
 ```
 
-Fineract Docker Image Creation.
+Fineract Docker Image Creation
+==============================
 Login into the Container Repository Account 
 ```console
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -98,6 +100,8 @@ After this actions you can test the pulling command
 docker pull fineract/org.apache.fineract
 ```
 Mifos Docker Image Creation
+===========================
+
 Login into the Container Repository Account 
 ```console
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
