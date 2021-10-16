@@ -32,6 +32,9 @@ sudo groupadd docker
 #Add your user to the docker group.
 sudo usermod -aG docker $USER
 
+#Add jenkins user to the docker group.
+sudo usermod -aG docker jenkins
+
 #Register the Docker service	
 sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
