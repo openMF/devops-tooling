@@ -5,6 +5,7 @@ git clone https://github.com/openMF/devops-tooling.git
 cd devops-tooling/scripts/
 chmod 775 *
 sudo ./01.java_installation.sh 
+sudo ./02.jenkins_installation.sh 
 ```
 
 Requirements
