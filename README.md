@@ -1,5 +1,5 @@
 # Devops-tooling
-DevOps Tooling Scripts TL;TD
+DevOps Tooling Scripts TL;DR 
 ```console
 git clone https://github.com/openMF/devops-tooling.git
 cd devops-tooling/scripts/
