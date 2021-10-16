@@ -45,7 +45,7 @@ pipeline {
         stage ('Build Docker Image') {
             try {
                 sh 'docker build -t $COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH . '
-                sh 'echo "IMAGEN DOCKER CREADA DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV"'
+                sh 'echo "DOCKER IMAGE CREATED DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV"'
                 hangoutsNotify message: "Success",token: "changeme",threadByJob: true
             } catch (Exception err) {
                 error 'Build failed'
@@ -57,11 +57,11 @@ pipeline {
         stage ('Push Docker Image') {
             try {
                 sh 'echo $DOCKER_PASSWORD | docker login $REGISTRY -u $DOCKER_ID_USER --password-stdin'
-                sh 'echo "DOCKER LOGIN REALIZADO " "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD REGISTRY=$REGISTRY"'
+                sh 'echo "DOCKER LOGIN DONE " "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD REGISTRY=$REGISTRY"'
                 sh 'docker tag $COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH $REGISTRY/$HARBOR_NAMESPACE/$COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH'
-                sh 'echo "IMAGEN DOCKER ETIQUETADA" "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV REGISTRY=$REGISTRY"'
+                sh 'echo "DOCKER IMAGE TAGGED" "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV REGISTRY=$REGISTRY"'
                 sh 'docker push $REGISTRY/$HARBOR_NAMESPACE/$COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH'
-                sh 'echo "IMAGEN DOCKER PUBLICADA " "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV REGISTRY=$REGISTRY"'
+                sh 'echo "DOCKER IMAGE PUBLISHED " "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV REGISTRY=$REGISTRY"'
                 sh ''
                 hangoutsNotify message: "Success",token: "changeme",threadByJob: true
             } catch (Exception err) {
