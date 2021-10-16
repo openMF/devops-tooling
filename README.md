@@ -6,6 +6,7 @@ cd devops-tooling/scripts/
 chmod 775 *
 sudo ./01.java_installation.sh 
 sudo ./02.jenkins_installation.sh 
+sudo ./03.docker_installation.sh
 ```
 
 Requirements
@@ -79,6 +80,66 @@ sudo systemctl start jenkins
 Check the status of the Jenkins service
 ```console
 sudo systemctl status jenkins
+```
+Docker Installation
+===================
+
+Uninstall old versions. 
+```console
+sudo apt-get remove docker docker-engine docker.io containerd runc
+```
+Update the apt package index and install packages to allow apt to use a repository over HTTPS:
+```console
+sudo apt-get update
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+```
+Add Docker’s official GPG key
+```console
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+Use the following command to set up the stable repository
+```console
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+Update the package sources
+```console
+sudo apt-get update
+```
+Install Docker
+```console
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+Create the docker group
+```console
+sudo groupadd docker
+```
+Add your user to the docker group.
+```console
+sudo usermod -aG docker $USER
+```
+Register the Docker service	
+```console
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
+```
+Run this command to download the current stable release of Docker Compose
+```console
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname-s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+Apply executable permissions to the binary
+```console
+sudo chmod +x /usr/local/bin/docker-compose
+```
+Test the installation.
+```console
+docker-compose --version
 ```
 
 Fineract Docker Image Creation
