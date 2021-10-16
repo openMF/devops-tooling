@@ -11,8 +11,10 @@ Java Installation
 =================
 
 1. Install the dependencies
-`sudo apt-get -q update`
-`sudo apt-get -yq install gnupg curl` 
+``bash
+sudo apt-get -q update
+sudo apt-get -yq install gnupg curl
+`` 
 
 1. Add Azul's public key 
 `sudo apt-key adv \
