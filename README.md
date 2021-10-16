@@ -3,9 +3,10 @@ DevOps Tooling Scripts
 
 Requirements
 ============
-* Java >= 11 (Azul Zulu JVM)
-* Jenkins >=2
-* MySQL 5.7
+* Ubuntu 20.04 LTS Server
+* Jenkins 2.316
+* Docker CE 20.10.9
+* Java Azul Zulu JDK 11
 
 Java Installation 
 =================
