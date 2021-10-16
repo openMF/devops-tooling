@@ -1,5 +1,11 @@
 # Devops-tooling
-DevOps Tooling Scripts
+DevOps Tooling Scripts TL;TD
+```console
+git clone https://github.com/openMF/devops-tooling.git
+cd devops-tooling/scripts/
+chmod 775 *
+sudo ./01.java_installation.sh 
+```
 
 Requirements
 ============
