@@ -7,8 +7,8 @@ Requirements
 * Jenkins >=2
 * MySQL 5.7
 
-01. Java Installation 
-======================
+Java Installation 
+=================
 
 a. Install the dependencies
 ```console
