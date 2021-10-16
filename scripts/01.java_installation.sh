@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 sudo apt-get -q update
 sudo apt-get -yq install gnupg curl 
 
