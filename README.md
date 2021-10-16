@@ -28,15 +28,15 @@ curl -O https://cdn.azul.com/zulu/bin/zulu-repo_1.0.0-2_all.deb
 ```
 d. Install the package
 ```console
-sudo apt-get install ./zulu-repo_1.0.0-2_all.deb
+sudo apt-get -yq install ./zulu-repo_1.0.0-2_all.deb
 ```
 e. Update the package sources
 ```console
-sudo apt-get update
+sudo apt-get -q update
 ```
 f. Install Azul Zulu JDK 11
 ```console
-sudo apt-get install zulu11-jdk
+sudo apt-get -yq install zulu11-jdk
 ```
 g. Verify the Java version
 ```console
