@@ -13,7 +13,7 @@ pipeline {
         GIT_URL = 'https://github.com/openMF/fineract.git'
         COMPANY = 'apache'
         COMPANY_TYPE = 'org'
-        COMPANY_BRAND = 'apache'
+        COMPANY_BRAND = 'openbanking'
         COMPANY_PRODUCT = 'fineract'
         HANGOUT_TOKEN = credentials('hangout-token')
         GITHUB_CREDENTIAL_ID = credentials('github-fineract')
