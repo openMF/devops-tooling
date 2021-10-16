@@ -1,0 +1,87 @@
+pipeline {
+    agent any
+
+    hangoutsNotify message: "Begin of Pipeline ${currentBuild.fullDisplayName}",token: "j4u77pBDOBramfew88nE7cLoy",threadByJob: true
+    node {
+        env.DOCKER_ID_USER =  'CHANGEME'
+        env.DOCKER_PASSWORD = 'CHANGEME'
+        env.DOCKER_ENV="development"
+        env.REGISTRY = 'hub.docker.com'
+        env.HARBOR_NAMESPACE = 'mifos'
+        env.JAVA_HOME = '/usr/lib/jvm/zulu11-ca-amd64/'
+        env.GIT_BRANCH = 'develop'
+        env.GIT_URL = 'https://github.com/openMF/community-app.git'
+        env.COMPANY = 'mifos'
+        env.COMPANY_TYPE = 'org'
+        env.COMPANY_BRAND = 'mifos'
+        env.COMPANY_PRODUCT = 'community-app'
+
+        hangoutsNotify message: "Clean WorkSpace at the Begining",token: "changeme",threadByJob: true
+        stage('Clean WorkSpace at the Begining'){
+            try {
+                cleanWs()
+                sh 'docker system prune -a --volumes --force'
+                sh 'id'
+                hangoutsNotify message: "Success",token: "changeme",threadByJob: true
+            } catch (Exception err){
+                error 'Build failed'
+                hangoutsNotify message: "Error",token: "changeme",threadByJob: true
+            }
+        }
+
+        hangoutsNotify message: "Clone GitHub Repository",token: "changeme",threadByJob: true
+        stage ('Clone GitHub Repository') {
+            try {
+                git branch: "$GIT_BRANCH", credentialsId: 'fintecheandogithub',  url: "$GIT_URL"
+                hangoutsNotify message: "Success",token: "changeme",threadByJob: true
+            } catch (Exception err) {
+                error 'Build failed'
+                hangoutsNotify message: "Error",token: "changeme",threadByJob: true
+            }
+
+        }
+
+        hangoutsNotify message: "Build Docker Image",token: "changeme",threadByJob: true
+        stage ('Build Docker Image') {
+            try {
+                sh 'docker build -t $COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH . '
+                sh 'echo "DOCKER IMAGE CREATED DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV"'
+                hangoutsNotify message: "Success",token: "changeme",threadByJob: true
+            } catch (Exception err) {
+                error 'Build failed'
+                hangoutsNotify message: "Error",token: "changeme",threadByJob: true
+            }
+        }
+
+        hangoutsNotify message: "Push Docker Image",token: "changeme",threadByJob: true
+        stage ('Push Docker Image') {
+            try {
+                sh 'echo $DOCKER_PASSWORD | docker login $REGISTRY -u $DOCKER_ID_USER --password-stdin'
+                sh 'echo "DOCKER LOGIN DONE " "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD REGISTRY=$REGISTRY"'
+                sh 'docker tag $COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH $REGISTRY/$HARBOR_NAMESPACE/$COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH'
+                sh 'echo "DOCKER IMAGE TAGGED" "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV REGISTRY=$REGISTRY"'
+                sh 'docker push $REGISTRY/$HARBOR_NAMESPACE/$COMPANY_TYPE.$COMPANY.$COMPANY_BRAND.$COMPANY_PRODUCT.$GIT_BRANCH'
+                sh 'echo "DOCKER IMAGE PUBLISHED " "DOCKER_ID_USER=$DOCKER_ID_USER DOCKER_PASSWORD=$DOCKER_PASSWORD DOCKER_ENV=$DOCKER_ENV REGISTRY=$REGISTRY"'
+                sh ''
+                hangoutsNotify message: "Success",token: "changeme",threadByJob: true
+            } catch (Exception err) {
+                error 'Build failed'
+                hangoutsNotify message: "Error",token: "changeme",threadByJob: true
+            }
+        }
+
+        hangoutsNotify message: "Clean WorkSpace at the End",token: "changeme",threadByJob: true
+        stage('Clean WorkSpace at the End'){
+            try{
+                sh 'docker system prune -a --volumes -f'
+                cleanWs()
+                hangoutsNotify message: "Success",token: "changeme",threadByJob: true
+            } catch (Exception err) {
+                error 'Build failed'
+                hangoutsNotify message: "Error",token: "changeme",threadByJob: true
+            }
+        }
+        hangoutsNotify message: "Finalizing the Pipeline of ${currentBuild.fullDisplayName}",token: "changeme",threadByJob: true
+        hangoutsNotify message: "Completed build of : $GIT_URL Branch: $GIT_BRANCH",token: "changeme",threadByJob: false
+    }
+}
